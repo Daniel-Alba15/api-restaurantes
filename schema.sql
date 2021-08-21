@@ -1,0 +1,16 @@
+CREATE TABLE restaurants(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(100) NOT NULL,
+	description TEXT NOT NULL,
+	direction VARCHAR(100) NOT NULL,
+	city VARCHAR(50) NOT NULL,
+	url_photo TEXT NOT NULL
+)
+
+CREATE TABLE reservations(
+	id SERIAL PRIMARY KEY,
+	reserved_by VARCHAR(100) NOT NULL,
+	date DATE NOT NULL DEFAULT CURRENT_DATE, 
+	restaurant_id SERIAL,
+	FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
+)
