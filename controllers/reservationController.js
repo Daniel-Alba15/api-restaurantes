@@ -21,7 +21,7 @@ exports.createReservation = [
             return res.json(new ApiResponse({ error: errors.array() }));
         }
 
-        const { rows } = await db.query('INSERT INTO reservations(reserved_by, restaurant_id) VALUES($1, $2) RETURNING *', [req.body.reserved_by, req.body.restaurant_id]);
+        const { rows } = await db.query('INSERT INTO reservations(reserved_by, restaurant_id, date) VALUES($1, $2, $3) RETURNING *', [req.body.reserved_by, req.body.restaurant_id, req.body.date]);
 
         res.json(new ApiResponse({ data: rows }));
     }

@@ -7,7 +7,7 @@ exports.limitDay = async (req, res, next) => {
 
     console.log(rows);
     if (rows[0].count >= 20) {
-        return res.status(403).json(new ApiResponse({ error: "No se pueden hacer mas reservaciones" }));
+        return res.status(403).json(new ApiResponse({ error: "No se pueden hacer mas reservaciones por hoy" }));
     }
 
     next();
