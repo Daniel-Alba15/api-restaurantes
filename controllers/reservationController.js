@@ -5,9 +5,13 @@ const ApiResponse = require('../utils/response');
 
 
 exports.getAllReservations = async (req, res) => {
-    const { rows } = await db.query('SELECT * FROM reservations INNER JOIN restaurants ON reservations.restaurant_id = restaurants.id');
+    try {
+        const { rows } = await db.query('SELECT * FROM reservations INNER JOIN restaurants ON reservations.restaurant_id = restaurants.id');
 
-    res.json(new ApiResponse({ data: rows }));
+        res.json(new ApiResponse({ data: rows }));
+    } catch (e) {
+        res.status(500).json(new ApiResponse({ error: 'Something went wrong, please try again' }));
+    }
 };
 
 exports.createReservation = [
@@ -21,8 +25,12 @@ exports.createReservation = [
             return res.json(new ApiResponse({ error: errors.array() }));
         }
 
-        const { rows } = await db.query('INSERT INTO reservations(reserved_by, restaurant_id, date) VALUES($1, $2, $3) RETURNING *', [req.body.reserved_by, req.body.restaurant_id, req.body.date]);
+        try {
+            const { rows } = await db.query('INSERT INTO reservations(reserved_by, restaurant_id, date) VALUES($1, $2, $3) RETURNING *', [req.body.reserved_by, req.body.restaurant_id, req.body.date]);
 
-        res.json(new ApiResponse({ data: rows }));
+            res.json(new ApiResponse({ data: rows }));
+        } catch (e) {
+            res.status(500).json(new ApiResponse({ error: 'Something went wrong, please try again' }));
+        }
     }
 ];

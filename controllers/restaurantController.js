@@ -18,24 +18,36 @@ exports.createRestaurant = [
             return res.status(400).json(new ApiResponse({ error: errors.array() }));
         }
 
-        const { rows } = await db.query('INSERT INTO restaurants(name, direction, description, city, url_photo) VALUES($1, $2, $3, $4, $5) RETURNING *',
-            [req.body.name, req.body.direction, req.body.description, req.body.city, req.body.url_photo]);
+        try {
+            const { rows } = await db.query('INSERT INTO restaurants(name, direction, description, city, url_photo) VALUES($1, $2, $3, $4, $5) RETURNING *',
+                [req.body.name, req.body.direction, req.body.description, req.body.city, req.body.url_photo]);
 
-        res.json(new ApiResponse({ data: rows }));
+            res.json(new ApiResponse({ data: rows }));
+        } catch (e) {
+            res.status(500).json(new ApiResponse({ error: 'Something went wrong, please try again' }));
+        }
     }
 ];
 
 exports.getAllRestaurants = async (req, res) => {
-    const { rows } = await db.query('SELECT * FROM restaurants ORDER BY name, city');
+    try {
+        const { rows } = await db.query('SELECT * FROM restaurants ORDER BY name, city');
 
-    res.json(new ApiResponse({ data: rows }));
+        res.json(new ApiResponse({ data: rows }));
+    } catch (e) {
+        res.status(500).json(new ApiResponse({ error: 'Something went wrong, please try again' }));
+    }
 };
 
 
 exports.deleteRestaurant = async (req, res) => {
-    const { rows } = await db.query('DELETE FROM restaurants WHERE id = $1', [req.params.id]);
+    try {
+        await db.query('DELETE FROM restaurants WHERE id = $1', [req.params.id]);
 
-    res.json(new ApiResponse({ data: 'Done!' }));
+        res.json(new ApiResponse({ data: 'Done!' }));
+    } catch (e) {
+        res.status(500).json(new ApiResponse({ error: 'Something went wrong, please try again' }));
+    }
 };
 
 exports.searchRestaurant = [
@@ -47,8 +59,12 @@ exports.searchRestaurant = [
             return res.status(400).json(new ApiResponse({ error: errors.array() }));
         }
 
-        const { rows } = await db.query(`SELECT * FROM restaurants WHERE UPPER(name) LIKE UPPER('${req.body.text}%')`);
+        try {
+            const { rows } = await db.query(`SELECT * FROM restaurants WHERE UPPER(name) LIKE UPPER('${req.body.text}%')`);
 
-        res.json(new ApiResponse({ data: rows }));
+            res.json(new ApiResponse({ data: rows }));
+        } catch (e) {
+            res.status(500).json(new ApiResponse({ error: 'Something went wrong, please try again' }));
+        }
     }
 ]

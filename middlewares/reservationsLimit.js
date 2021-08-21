@@ -5,7 +5,6 @@ const ApiResponse = require('../utils/response');
 exports.limitDay = async (req, res, next) => {
     const { rows } = await db.query('SELECT COUNT(id) FROM reservations WHERE date = $1', [new Date().toLocaleDateString()]);
 
-    console.log(rows);
     if (rows[0].count >= 20) {
         return res.status(403).json(new ApiResponse({ error: "No se pueden hacer mas reservaciones por hoy" }));
     }
