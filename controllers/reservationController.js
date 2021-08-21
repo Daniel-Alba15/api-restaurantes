@@ -6,11 +6,12 @@ const ApiResponse = require('../utils/response');
 
 exports.getAllReservations = async (req, res) => {
     try {
-        const { rows } = await db.query('SELECT * FROM reservations INNER JOIN restaurants ON reservations.restaurant_id = restaurants.id');
+        const { rows } = await db.query('SELECT * FROM reservations INNER JOIN restaurants ON reservations.restaurant_id = restaurants.id ORDER BY date');
 
         res.json(new ApiResponse({ data: rows }));
     } catch (e) {
-        res.status(500).json(new ApiResponse({ error: 'Something went wrong, please try again' }));
+        console.log(e);
+        res.status(500).json(new ApiResponse({ error: e.message }));
     }
 };
 
@@ -30,6 +31,7 @@ exports.createReservation = [
 
             res.json(new ApiResponse({ data: rows }));
         } catch (e) {
+            console.log(e.message);
             res.status(500).json(new ApiResponse({ error: 'Something went wrong, please try again' }));
         }
     }
