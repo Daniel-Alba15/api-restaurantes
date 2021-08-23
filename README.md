@@ -23,15 +23,15 @@ La respuesta es un Json con la siguiente estructura:
   POST /api/restaurant
 ```
 
-`name`: **Requerido**.
+`name`: **Requerido**, string.
 
-`direction`: **Requerido**.
+`direction`: **Requerido**, string.
 
-`description`: **Requerido**.
+`description`: **Requerido**, string.
 
-`city`: **Requerido**.
+`city`: **Requerido**, string.
 
-`url_photo`: **Requerido**.
+`url_photo`: **Requerido**, url.
 
 
 #### Obtener todos los restaurantes
@@ -62,7 +62,7 @@ La respuesta es un Json con la siguiente estructura:
 ```
 `reserved_by`: **Requerido**, string.
 
-`restaurant_id`: **Required**, number
+`restaurant_id`: **Requerido**, número.
 
 `date`: Opcional, si no se brinda una se utilizará la fecha actual como valor por defecto.
 
